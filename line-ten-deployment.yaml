@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: line-ten
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: line-ten
+  template:
+    metadata:
+      labels:
+        app: line-ten
+    spec:
+      containers:
+        - name: line-ten
+          image: line-ten       # This should match your Docker image name
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000  # Ensure this matches the port your app uses
