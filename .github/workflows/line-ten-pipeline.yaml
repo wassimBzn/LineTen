@@ -39,6 +39,9 @@ jobs:
         run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }}
 
   deploy:
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     needs: build
 
