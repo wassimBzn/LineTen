@@ -63,7 +63,7 @@ jobs:
             az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group line-ten --name line-ten-cluster
+        run: az aks get-credentials --resource-group line-ten-rg --name line-ten-aks --overwrite-existing
 
       - name: Deploy to AKS
         env:
