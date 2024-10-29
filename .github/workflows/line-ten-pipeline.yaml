@@ -36,7 +36,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Push Docker Image to Docker Hub
-        run: docker push YOUR_DOCKER_HUB_USERNAME/line-ten:${{ github.sha }}
+        run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
         run: az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group YOUR_RESOURCE_GROUP --name YOUR_AKS_CLUSTER_NAME
+        run: az aks get-credentials --resource-group line-ten --name line-ten-cluster
 
       - name: Deploy to AKS
         run: |
