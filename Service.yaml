@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: line-ten-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: line-ten
