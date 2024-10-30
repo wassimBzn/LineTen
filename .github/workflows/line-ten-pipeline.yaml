@@ -56,4 +56,6 @@ jobs:
       - name: Use context
         run: kubectl config use-context line-ten-aks
       - name: Deploy to K8s
-        run: kubectl apply -f k8s/
+        run: | 
+          kubectl apply -f k8s/
+          kubectl rollout restart deployment line-ten-deployment
