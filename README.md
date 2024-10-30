@@ -1,5 +1,5 @@
 Project Overview
-
+Link for the app : http://wassimbzn.eastus.cloudapp.azure.com/
 This README provides a step-by-step outline of the approach taken to complete the interview project, including initial setup, app creation, containerization, Kubernetes deployment, and automation with GitHub Actions.
 
 Project Steps
