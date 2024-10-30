@@ -10,7 +10,7 @@ import './index.css'; // Import Tailwind CSS
 const App = () => {
     return (
         <div>
-            <PomodoroTimer />
+            <PomodoroTimer V2 />
         </div>
     );
 };
