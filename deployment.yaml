@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: line-ten
-          image: wassimbzn/line-ten:v1.0
+          image: wassimbzn/line-ten:latest
           ports:
             - containerPort: 3000            # Ensure this is the correct port for your app
           readinessProbe:
