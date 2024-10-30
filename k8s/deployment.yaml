@@ -15,6 +15,7 @@ spec:
       containers:
         - name: line-ten
           image: wassimbzn/line-ten:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000            # Ensure this is the correct port for your app
           readinessProbe:
