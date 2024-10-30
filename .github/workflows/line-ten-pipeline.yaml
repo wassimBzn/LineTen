@@ -32,9 +32,15 @@ jobs:
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Create Docker tag
+        run: docker tag "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }} "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:latest
 
       - name: Push Docker Image to Docker Hub
-        run: docker push "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }}
+        run: | 
+            docker push "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }}
+            docker push "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:latest
+
+
   deploy:
     name: Deploy to Kubernetes
     runs-on: ubuntu-latest
