@@ -1,1 +1,1 @@
-location = "eastus"  # Change as needed
+location = "eastus"  # eastus is a good region to use some free tier vms

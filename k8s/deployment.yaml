@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: line-ten-deployment
 spec:
+  # here i'm specifying 2 replicas or the number of the pods that i want to load balance on
   replicas: 2
   selector:
     matchLabels:
@@ -17,10 +18,10 @@ spec:
           image: wassimbzn/line-ten:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3000            # Ensure this is the correct port for your app
+            - containerPort: 3000            # this the port that i will use and it will be the same as the docker file's port
           readinessProbe:
             httpGet:
-              path: /health                  # Ensure this matches your app’s health route
-              port: 3000                     # Update this port if your app uses something other than 80
+              path: /
+              port: 3000                     # after deploying the pod this healthcheck will curl check if it's accessible or not for the app
             initialDelaySeconds: 10
             periodSeconds: 5

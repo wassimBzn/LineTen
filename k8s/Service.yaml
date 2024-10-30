@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: line-ten-service
 spec:
-  type: LoadBalancer
+  type: LoadBalancer # here is the definition of the load balancer between the 2 pods replicas that we defined in the top of the deployment part
   ports:
     - port: 80
       targetPort: 3000

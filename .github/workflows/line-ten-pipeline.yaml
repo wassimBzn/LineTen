@@ -3,11 +3,9 @@ name: Build and deploy line ten
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main"] #this pipeline will run everytime we push something in the main branch
   workflow_dispatch:
 
-env:
-  DEPLOYMENT_MANIFEST_PATH: "./deployment.yaml"
 
 jobs:
   buildImage:
@@ -19,13 +17,14 @@ jobs:
       # Checks out the repository this file is in
       - uses: actions/checkout@v4
 
-      # Logs in with your Azure credentials
+      # Logs in with the Azure credentials and make sure that we are using azure/cli@v1 to be able to run the az login cli command
       - name: Azure login
         uses: azure/cli@v1
         with:
           inlineScript: |
             az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
 
+      # building the docker image ( in order to take tha changes that we did in the last commit we need to re-build the docker image and re-pushed again to docker hub
       - name: Build Docker Image
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/line-ten:${{ github.sha }} .
@@ -34,7 +33,10 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
       - name: Create Docker tag
         run: docker tag "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }} "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:latest
-
+      # the idea here is to create the new image using a tag inspired from the commit ( sha-1 hash)
+      # and to override the latest version that we have in the dockerhub
+      # because in the deployment file we are taking the image with the tag latest always
+      # if we override it with the new version it will be always taking the last version
       - name: Push Docker Image to Docker Hub
         run: | 
             docker push "${{ secrets.DOCKER_HUB_USERNAME }}"/line-ten:${{ github.sha }}
@@ -48,6 +50,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      # the idea here is to make the login through the aks cluster.
+      # i have the kube config file so i have to convert it into base64 otherwise github actions will run it as commands not as a file.
+      # i stored it in the github secrets and use it to login to aks
       - name: Create kubeconfig
         run: |
           mkdir ${HOME}/.kube
@@ -55,6 +60,7 @@ jobs:
 
       - name: Use context
         run: kubectl config use-context line-ten-aks
+        # this command is to apply the changes if exists in the deployment, service files and restart the pods
       - name: Deploy to K8s
         run: | 
           kubectl apply -f k8s/

@@ -8,11 +8,10 @@ services:
       dockerfile: Dockerfile
     # Container will restart automatically on failures
     restart: unless-stopped
-    # Expose the container's internal port to your host machine
     ports:
       - "3000:3000"  # Host port : Container port
-    # Optional: add environment variables
+
     environment:
       - NODE_ENV=production
-    # Set the default command if needed (optional)
+
     command: ["npm", "start"]
